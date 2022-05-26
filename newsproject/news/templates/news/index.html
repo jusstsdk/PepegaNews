@@ -1,0 +1,15 @@
+{% extends 'news/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    {% for item in articles %}
+        <div class="alert alert-warning mt-2">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.content }}</p>
+            <p>{{ item.time_create }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
