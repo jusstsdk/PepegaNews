@@ -10,20 +10,29 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3"
+             style="background-color: #39634f;">
             <div class="container">
                 <a class="navbar-brand">LAB34</a>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="{% url 'home' %}">Home</a>
+                            <a class="nav-link text-light" href="{% url 'home' %}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="{% url 'about' %}">About</a>
+                            <a class="nav-link text-light" href="{% url 'about' %}">About</a>
+                        </li>
+                        <li class="nav-item text-light mx-auto my-auto">
+                            User: {{ user }}
                         </li>
                     </ul>
                     <ul class="navbar-nav mr-auto">
-                        <button class="btn btn-outline-success" type="button">Sign in</button>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'logout' %}" class="btn btn-outline-light">Sign out</a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="nav-link text-light">Sign in</a>
+                            <a href="{% url 'register' %}" class="btn btn-outline-light">Sign up</a>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -33,6 +42,12 @@
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+
+{#    <footer class="border-top footer text-muted">#}
+{#        <div class="container">#}
+{#            &copy; 2022 - LAB34#}
+{#        </div>#}
+{#    </footer>#}
 
 </body>
 </html>

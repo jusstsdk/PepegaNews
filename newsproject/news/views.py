@@ -8,4 +8,4 @@ def index(request):
 
 
 def about(request):
-    return render(request, 'news/about.html')
+    return render(request, 'news/about.html', {'title': 'About'})
