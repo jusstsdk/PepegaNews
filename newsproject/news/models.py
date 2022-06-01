@@ -1,4 +1,35 @@
 from django.db import models
+from django.urls import reverse
+
+from users.models import User
+from django.conf import settings
+
+
+class Author(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    description = models.TextField(blank=True)
+    # profile_photo = models.ImageField(??)
+
+    def __str__(self):
+        return self.user.name
+
+    def get_absolute_url(self):
+        return reverse('profile', args=[str(self.id)])
+
+    class Meta:
+        verbose_name = 'Author'
+        verbose_name_plural = 'Authors'
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
 
 
 class Article(models.Model):
@@ -7,10 +38,19 @@ class Article(models.Model):
     # photo = models.ImageField(upload_to="photos/%Y/%m/%d/")
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('article_detail', args=[str(self.id)])
+
     class Meta:
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
+
+
+
+
+

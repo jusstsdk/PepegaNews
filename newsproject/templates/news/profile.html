@@ -1,0 +1,10 @@
+{% extends 'news/base.html' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'create' %}" class="btn btn-success">Add article</a>
+
+{% endblock %}
