@@ -5,6 +5,17 @@
 {% endblock %}
 
 {% block content %}
-    <h1>pizda</h1>
+    <h3>Author: {{ author_user }}</h3>
+    <p>Description: {{ author.description }}</p>
+    <p>Date joined: {{ author_user.date_joined }}</p>
 
+    {% for item in author_articles %}
+        <div class="alert alert-warning mt-2">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.category.all }} </p>
+            <p>{{ item.content }}</p>
+            <p>{{ item.time_create }}</p>
+            <p>{{ item.author }}</p>
+        </div>
+    {% endfor %}
 {% endblock %}

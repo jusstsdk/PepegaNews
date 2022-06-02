@@ -6,5 +6,20 @@
 
 {% block content %}
     <a href="{% url 'create' %}" class="btn btn-success">Add article</a>
+    <a href="{% url 'edit_profile' %}" class="btn btn-secondary">Edit profile</a><br><br>
+    <h3><strong>Name: </strong>{{ user }}</h3>
+    <p><strong>Description: </strong>{{ profile_user.description }}</p>
+    <p><strong>Date joined: </strong>{{ user.date_joined }}</p>
 
+    {% for item in profile_articles %}
+        <div class="alert alert-warning mt-2">
+            <h3>{{ item.title }}</h3>
+            <p>Category: {{ item.category.all }} </p>
+            <p>{{ item.content }}</p>
+            <p>{{ item.time_create }}</p>
+            <p>{{ item.author }}</p>
+            <a href="" class="btn btn-outline-secondary">edit</a>
+            <a href="" class="btn btn-outline-danger">delete</a>
+        </div>
+    {% endfor %}
 {% endblock %}

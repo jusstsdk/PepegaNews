@@ -8,6 +8,7 @@
     {% for item in articles %}
         <div class="alert alert-warning mt-2">
             <h3>{{ item.title }}</h3>
+            <p>{{ item.category.all }}</p>
             <p>{{ item.content }}</p>
             <p>{{ item.time_create }}</p>
             <p>{{ item.author }}</p>

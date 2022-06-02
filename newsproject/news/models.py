@@ -1,20 +1,20 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
-
 from users.models import User
-from django.conf import settings
 
 
 class Author(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(blank=True)
+
     # profile_photo = models.ImageField(??)
 
     def __str__(self):
-        return self.user.name
+        return self.user.username
 
     def get_absolute_url(self):
-        return reverse('profile', args=[str(self.id)])
+        return reverse('author-detail', args=[str(self.pk)])
 
     class Meta:
         verbose_name = 'Author'
@@ -34,6 +34,7 @@ class Category(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
+    category = models.ManyToManyField(Category)
     content = models.TextField(blank=True)
     # photo = models.ImageField(upload_to="photos/%Y/%m/%d/")
     time_create = models.DateTimeField(auto_now_add=True)
@@ -49,8 +50,3 @@ class Article(models.Model):
     class Meta:
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
-
-
-
-
-

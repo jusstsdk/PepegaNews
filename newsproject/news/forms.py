@@ -1,19 +1,23 @@
 from .models import Article
-from django.forms import ModelForm, TextInput, Textarea
+from django import forms
 
 
-class ArticleForm(ModelForm):
+class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'content']
+        fields = ['title', 'category', 'content']
 
         widgets = {
-            "title": TextInput(attrs={
+            "title": forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Title'
             }),
-            "content": Textarea(attrs={
+            "content": forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Content'
+            }),
+            "category": forms.SelectMultiple(attrs={
+                'class': 'form-control',
+                'placeholder': 'Category'
             })
         }

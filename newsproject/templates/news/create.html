@@ -10,6 +10,7 @@
     <form method="post">
         {% csrf_token %}
         {{ form.title }}<br>
+        {{ form.category }}<br>
         {{ form.content }}<br>
         <span>{{ error }}</span>
         <button class="btn btn-primary" type="submit">Create</button>

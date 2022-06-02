@@ -36,11 +36,21 @@ def create(request):
 
 
 def profile(request):
-    # author = Author.objects.get()
+    profile_articles = Article.objects.filter(author=request.user).order_by("-time_create")
+    profile_user = Author.objects.get(user_id=request.user)
     data = {
-        'title': 'Profile'
+        'title': 'Profile',
+        'profile_articles': profile_articles,
+        'profile_user': profile_user
     }
     return render(request, 'news/profile.html', data)
+
+
+def edit_profile(request):
+    data = {
+        'title': 'Edit profile'
+    }
+    return render(request, 'news/edit_profile.html', data)
 
 
 class ArticlesListView(ListView):
@@ -55,5 +65,14 @@ class ArticleDetailView(DetailView):
     model = Article
 
 
-class AuthorDetailView(DetailView):
-    model = Author
+class AuthorView(View):
+    def get(self, request, pk):
+        author_user = User.objects.get(pk=pk)
+        author = Author.objects.get(user_id=pk)
+        author_articles = Article.objects.filter(author=author.user).order_by("-time_create")
+        data = {
+            'author_user': author_user,
+            'author': author,
+            'author_articles': author_articles
+        }
+        return render(request, 'news/author_detail.html', data)

@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block content %}
+    <h3>All articles</h3>
     {% for article in article_list %}
-        <li>
-            <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
-{#            <a href="{% url 'author-detail' article.author.pk%}">{{ article.author }}</a>#}
+        <div class="alert alert-warning mt-2">
+            <a href="{{ article.get_absolute_url }}" style="font-size: 1.5rem; color: green">{{ article.title }}</a><br>
             {{ article.time_create }}
-        </li>
+        </div>
     {% endfor %}
 {% endblock %}
