@@ -5,12 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
+    <p class="fs-3">Update profile</p>
+    <form method="post" enctype="multipart/form-data" class="form-group">
         {% csrf_token %}
-        {{ form.title }}<br>
-        {{ form.category }}<br>
-        {{ form.content }}<br>
-        <span>{{ error }}</span>
+        {{ form.as_p }}
         <button class="btn btn-primary" type="submit">Confirm</button>
     </form>
 {% endblock %}

@@ -14,7 +14,11 @@
             None
         {% endif %}
     </p>
-    <p><strong>Categories: </strong>{{ article.category.all }}</p>
+    <p><strong>Categories: </strong>
+        {% for category in article.category.all %}
+            {{ category.name }}
+        {% endfor %}
+    </p>
     <p><strong>Content: </strong> {{ article.content }}</p>
     <p><strong>Date: </strong> {{ article.time_create }}</p>
 {% endblock %}

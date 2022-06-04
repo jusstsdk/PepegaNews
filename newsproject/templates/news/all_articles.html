@@ -6,6 +6,18 @@
 
 {% block content %}
     <h3>All articles</h3>
+
+    <div class="dropdown">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown button
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+    </div>
+
     {% for article in article_list %}
         <div class="alert alert-warning mt-2">
             <a href="{{ article.get_absolute_url }}" style="font-size: 1.5rem; color: green">{{ article.title }}</a><br>

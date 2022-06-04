@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import View
-
+from django.views.generic import DetailView, ListView, UpdateView, DeleteView
 from .models import *
-from .forms import ArticleForm
-from django.views.generic import DetailView, ListView
+from .forms import ArticleForm, ProfileUpdateForm
 
 
 def index(request):
@@ -23,10 +22,9 @@ def create(request):
             article = form.save()
             article.author = request.user
             article.save()
-            return redirect('home')
+            return redirect('profile')
 
     form = ArticleForm()
-
     data = {
         'title': 'Add article',
         'form': form,
@@ -35,22 +33,38 @@ def create(request):
     return render(request, 'news/create.html', data)
 
 
-def profile(request):
-    profile_articles = Article.objects.filter(author=request.user).order_by("-time_create")
-    profile_user = Author.objects.get(user_id=request.user)
-    data = {
-        'title': 'Profile',
-        'profile_articles': profile_articles,
-        'profile_user': profile_user
-    }
-    return render(request, 'news/profile.html', data)
+class ProfileUpdateView(View):
+    def get(self, request):
+        author = Author.objects.get(user_id=request.user)
+        form = ProfileUpdateForm(instance=author)
+        data = {
+            "title": 'Update profile',
+            "form": form
+        }
+        return render(request, 'news/profile_update.html', data)
+
+    def post(self, request):
+        author = Author.objects.get(user_id=request.user)
+        form = ProfileUpdateForm(request.POST, instance=author)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        data = {
+            "form": form
+        }
+        return render(request, 'news/profile_update.html', data)
 
 
-def edit_profile(request):
-    data = {
-        'title': 'Edit profile'
-    }
-    return render(request, 'news/edit_profile.html', data)
+class ProfileView(View):
+    def get(self, request):
+        profile_articles = Article.objects.filter(author=request.user).order_by("-time_create")
+        profile_user = Author.objects.get(user_id=request.user)
+        data = {
+            'title': 'Profile',
+            'profile_articles': profile_articles,
+            'profile_user': profile_user
+        }
+        return render(request, 'news/profile.html', data)
 
 
 class ArticlesListView(ListView):
@@ -63,6 +77,19 @@ class ArticlesListView(ListView):
 
 class ArticleDetailView(DetailView):
     model = Article
+
+
+class ArticleUpdateView(UpdateView):
+    model = Article
+    template_name = 'news/create.html'
+    form_class = ArticleForm
+    success_url = '/profile'
+
+
+class ArticleDeleteView(DeleteView):
+    model = Article
+    success_url = '/profile'
+    template_name = 'news/article_delete.html'
 
 
 class AuthorView(View):
