@@ -1,7 +1,7 @@
 {% extends 'news/base.html' %}
 
 {% block title %}
-    {{ title }}
+    Filtered articles
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
         </button>
         <div class="dropdown-menu">
             {% for cat in categories %}
-                <a class="dropdown-item" href="/all-articles/{{ cat.name }}">{{ cat.name }}</a>
+                <a class="dropdown-item" href="">{{ cat }}</a>
             {% endfor %}
         </div>
     </div>

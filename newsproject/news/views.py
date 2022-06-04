@@ -71,8 +71,26 @@ class ArticlesListView(ListView):
     model = Article
     template_name = 'news/all_articles.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['title'] = 'All articles'
+        return context
+
     def get_queryset(self):
         return Article.objects.all().order_by("-time_create")
+
+
+class FilteredArticlesView(View):
+    def get(self, request, fltr):
+        article_list = Article.objects.filter(category__name=fltr)
+        categories = Category.objects.all()
+        context = {
+            'title': fltr,
+            'article_list': article_list,
+            'categories': categories
+        }
+        return render(request, 'news/all_articles.html', context)
 
 
 class ArticleDetailView(DetailView):
