@@ -5,23 +5,88 @@
 {% endblock %}
 
 {% block content %}
-    <h3>All articles</h3>
+    <div class="album py-2 bg-light">
 
-    <div class="dropdown">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Categories
-        </button>
-        <div class="dropdown-menu">
-            {% for cat in categories %}
-                <a class="dropdown-item" href="/all-articles/{{ cat.name }}">{{ cat.name }}</a>
-            {% endfor %}
+        <div class="dropdown px-3">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                Categories
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'all_articles' %}">All</a>
+                {% for cat in categories %}
+                    <a class="dropdown-item" href="/all-articles/{{ cat.name }}">{{ cat.name }}</a>
+                {% endfor %}
+            </div>
+            <br><br>
+        </div>
+
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for item in article_list %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <div class="custom-container">
+                                <img class="card-img-top" src="{{ item.photo.url }}" alt="Card image cap">
+                                <div class="custom-centered">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <a href="{{ item.get_absolute_url }}"
+                                   style="color: black; font-size: 20px"><strong>{{ item.title }}</strong></a>
+                                <p class="card-text">
+                                    {% for category in item.category.all %}
+                                        {{ category.name }}
+                                    {% endfor %} </p>
+                                <p class="card-text">
+                                    {{ item.content }}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">{{ item.time_create }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
-    {% for article in article_list %}
-        <div class="alert alert-warning mt-2">
-            <a href="{{ article.get_absolute_url }}" style="font-size: 1.5rem; color: green">{{ article.title }}</a><br>
-            {{ article.time_create }}
-        </div>
-    {% endfor %}
+    <style>
+        :root {
+            --jumbotron-padding-y: 3rem;
+        }
+
+
+        .jumbotron p:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        footer p {
+            margin-bottom: .25rem;
+        }
+
+        .box-shadow {
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+        }
+
+        .custom-container {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .custom-centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
 {% endblock %}

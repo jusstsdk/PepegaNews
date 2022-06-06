@@ -8,8 +8,6 @@ class Author(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(blank=True)
 
-    # profile_photo = models.ImageField(??)
-
     def __str__(self):
         return self.user.username
 
@@ -36,7 +34,7 @@ class Article(models.Model):
     title = models.CharField(max_length=100)
     category = models.ManyToManyField(Category)
     content = models.TextField(blank=True)
-    # photo = models.ImageField(upload_to="photos/%Y/%m/%d/")
+    photo = models.ImageField(upload_to="photos/", default="default.png")
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

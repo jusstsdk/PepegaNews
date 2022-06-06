@@ -5,25 +5,85 @@
 {% endblock %}
 
 {% block content %}
-    <a href="{% url 'create' %}" class="btn btn-success">Add article</a>
-    <a href="{% url 'profile_update' %}" class="btn btn-secondary">Edit profile</a><br><br>
-    <h3><strong>Name: </strong>{{ user }}</h3>
-    <p><strong>Description: </strong>{{ profile_user.description }}</p>
-    <p><strong>Date joined: </strong>{{ user.date_joined }}</p>
 
-    {% for item in profile_articles %}
-        <div class="alert alert-warning mt-2">
-            <a href="{{ item.get_absolute_url }}" style="font-size: 1.5rem; color: green">{{ item.title }}</a><br>
-            <p>Category:
-                {% for category in item.category.all %}
-                    {{ category.name }}
-                {% endfor %}
+
+    <div class="px-4 pt-5 text-center border-bottom">
+        <article class="blog-post">
+            <h2 class="display-5 fw-bold">{{ user }}</h2>
+            <hr>
+            <p class="fs-4">{{ profile_user.description }}</p>
+            <p class="fs-6" style="color: #666666">Joined: {{ user.date_joined }}</p>
+            <p style="color: #666666">
             </p>
-            <p>{{ item.content }}</p>
-            <p>{{ item.time_create }}</p>
-            <p>{{ item.author }}</p>
-            <a href="{% url 'article_update' item.pk %}" class="btn btn-outline-secondary">edit</a>
-            <a href="{% url 'article_delete' item.pk %}" class="btn btn-outline-danger">delete</a>
+        </article>
+        <br>
+        <a href="{% url 'create' %}" class="btn btn-success">Add article</a>
+        <a href="{% url 'profile_update' %}" class="btn btn-secondary">Edit profile</a>
+    </div>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for item in profile_articles %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <div class="custom-container">
+                                <img class="card-img-top" src="{{ item.photo.url }}" alt="Card image cap">
+                            </div>
+                            <div class="card-body">
+                                <a href="{{ item.get_absolute_url }}"
+                                   style="color: black; font-size: 20px"><strong>{{ item.title }}</strong></a>
+                                <p class="card-text">
+                                    {% for category in item.category.all %}
+                                        {{ category.name }}
+                                    {% endfor %} </p>
+                                <p class="card-text">
+                                    {{ item.content }}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="{% url 'article_update' item.pk %}"
+                                           class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a href="{% url 'article_delete' item.pk %}"
+                                           class="btn btn-sm btn-outline-danger">Delete</a>
+                                    </div>
+                                    <small class="text-muted">{{ item.time_create }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    {% endfor %}
+    </div>
+
+    <style>
+        :root {
+            --jumbotron-padding-y: 3rem;
+        }
+
+
+        .jumbotron p:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        footer p {
+            margin-bottom: .25rem;
+        }
+
+        .box-shadow {
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+        }
+
+        .custom-container {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+    </style>
 {% endblock %}

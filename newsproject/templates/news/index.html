@@ -1,21 +1,100 @@
 {% extends 'news/base.html' %}
 
 {% block title %}
-{{ title }}
+    {{ title }}
 {% endblock %}
 
 {% block content %}
-    {% for item in articles %}
-        <div class="alert alert-warning mt-2">
-            <h3>{{ item.title }}</h3>
-            <p>Category:
-                {% for category in item.category.all %}
-                    {{ category.name }}
-                {% endfor %}
-            </p>
-            <p>{{ item.content }}</p>
-            <p>{{ item.time_create }}</p>
-            <p>{{ item.author }}</p>
+    <div class="p-4 p-md-5 mb-4 text-white rounded" style="background-color: #39634f">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 fst-italic">{{ main.title }}</h1>
+            <p class="lead my-3" style="color: #8db591">by <a href="{% url 'author_detail' main.author.pk %}"
+                                                              style="color: #8db591">{{ main.author }}</a></p>
+            <p class="lead my-3">{{ main.content }}</p>
+            <p class="lead mb-0"><a href="{{ main.get_absolute_url }}" class="text-white fw-bold">Читать
+                полностью...</a></p>
         </div>
-    {% endfor %}
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-danger">
+                        {% for category in first.category.all %}
+                            {{ category.name }}
+                        {% endfor %}
+                    </strong>
+                    <h3 class="mb-0">{{ first.title }}</h3>
+                    <div class="mb-1 text-muted">{{ first.time_create }}</div>
+                    <p class="card-text mb-auto"></p>
+                    <a href="{{ first.get_absolute_url }}" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="bd-placeholder-img" src="{{ first.photo.url }}" alt="Card image cap" max-width="200"
+                         height="250">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">
+                        {% for category in second.category.all %}
+                            {{ category.name }}
+                        {% endfor %}
+                    </strong>
+                    <h3 class="mb-0">{{ second.title }}</h3>
+                    <div class="mb-1 text-muted">{{ second.time_create }}</div>
+                    <p class="mb-auto"></p>
+                    <a href="{{ second.get_absolute_url }}" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="bd-placeholder-img" src="{{ second.photo.url }}" alt="Card image cap" max-width="200"
+                         height="250">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-success">
+                        {% for category in third.category.all %}
+                            {{ category.name }}
+                        {% endfor %}
+                    </strong>
+                    <h3 class="mb-0">{{ third.title }}</h3>
+                    <div class="mb-1 text-muted">{{ third.time_create }}</div>
+                    <p class="card-text mb-auto"></p>
+                    <a href="{{ third.get_absolute_url }}" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="bd-placeholder-img" src="{{ third.photo.url }}" alt="Card image cap" max-width="200"
+                         height="250">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-warning">
+                        {% for category in fourth.category.all %}
+                            {{ category.name }}
+                        {% endfor %}
+                    </strong>
+                    <h3 class="mb-0">{{ fourth.title }}</h3>
+                    <div class="mb-1 text-muted">{{ fourth.time_create }}</div>
+                    <p class="mb-auto"> </p>
+                    <a href="{{ fourth.get_absolute_url }}" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="bd-placeholder-img" src="{{ fourth.photo.url }}" alt="Card image cap" max-width="200"
+                         height="250">
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

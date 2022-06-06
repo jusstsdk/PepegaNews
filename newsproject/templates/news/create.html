@@ -5,11 +5,12 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.title }}<br>
         {{ form.category }}<br>
         {{ form.content }}<br>
+        {{ form.photo }}<br><br>
         <span>{{ error }}</span>
         <button class="btn btn-primary" type="submit">Confirm</button>
     </form>

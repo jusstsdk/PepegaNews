@@ -7,20 +7,26 @@ from .forms import ArticleForm, ProfileUpdateForm
 
 def index(request):
     articles = Article.objects.all().order_by("-time_create")
-    return render(request, 'news/index.html', {'title': 'Home', 'articles': articles})
-
-
-def about(request):
-    return render(request, 'news/about.html', {'title': 'About'})
+    context = {
+        'title': 'PepegaNews',
+        'articles': articles,
+        'main': Article.objects.get(id=50),
+        'first': Article.objects.get(id=29),
+        'second': Article.objects.get(id=35),
+        'third': Article.objects.get(id=30),
+        'fourth': Article.objects.get(id=28)
+    }
+    return render(request, 'news/index.html', context)
 
 
 def create(request):
     error = ''
     if request.method == "POST":
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             article = form.save()
             article.author = request.user
+            # article.photo = request.FILES['']
             article.save()
             return redirect('profile')
 
@@ -75,6 +81,7 @@ class ArticlesListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['title'] = 'All articles'
+        context['article_list'] = Article.objects.all().order_by("-time_create")
         return context
 
     def get_queryset(self):

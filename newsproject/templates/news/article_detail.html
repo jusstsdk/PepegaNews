@@ -5,20 +5,20 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Title: {{ article.title }}</h3>
+    <div class="px-4 pt-5 text-center border-bottom">
+        <article class="blog-post">
+            <h2 class="display-5 fw-bold">{{ article.title }}</h2>
+            <hr>
 
-    <p><strong>Author: </strong>
-        {% if article.author is not None%}
-            <a href="{% url 'author_detail' article.author.pk %}"> {{ article.author }}</a>
-        {% else %}
-            None
-        {% endif %}
-    </p>
-    <p><strong>Categories: </strong>
-        {% for category in article.category.all %}
-            {{ category.name }}
-        {% endfor %}
-    </p>
-    <p><strong>Content: </strong> {{ article.content }}</p>
-    <p><strong>Date: </strong> {{ article.time_create }}</p>
+            <p class="fs-4">{{ article.content }}</p>
+            <p class="fs-6" style="color: #666666">{{ article.time_create }} by <a
+                    href="{% url 'author_detail' article.author.pk %}"> {{ article.author }}</a></p>
+            <p style="color: #666666">
+                {% for category in article.category.all %}
+                    {{ category.name }}
+                {% endfor %}
+            </p>
+            <img class="mr-3 img-fluid col" src="{{ article.photo.url }}">
+        </article>
+    </div>
 {% endblock %}

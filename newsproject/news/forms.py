@@ -10,7 +10,7 @@ class CustomMMCF(forms.ModelMultipleChoiceField):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'category', 'content']
+        fields = ['title', 'category', 'content', 'photo']
 
         widgets = {
             "title": forms.TextInput(attrs={
@@ -29,6 +29,7 @@ class ArticleForm(forms.ModelForm):
         }),
         to_field_name="name"
     )
+    photo = forms.ImageField(required=True)
 
 
 class ProfileUpdateForm(forms.ModelForm):
