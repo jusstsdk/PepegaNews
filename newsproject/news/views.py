@@ -1,3 +1,7 @@
+import asyncio
+import logging
+
+from asgiref.sync import sync_to_async
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import DetailView, ListView, UpdateView, DeleteView
@@ -5,21 +9,19 @@ from django.views.generic import DetailView, ListView, UpdateView, DeleteView
 from .models import *
 from .forms import ArticleForm, ProfileUpdateForm
 
-import logging
-
 logger = logging.getLogger('main')
 
 
 def index(request):
-    articles = Article.objects.all().order_by("-time_create")
+    articles = asyncio.run(get_all_articles_descending())
     context = {
         'title': 'PepegaNews',
         'articles': articles,
-        'main': Article.objects.get(id=50),
-        'first': Article.objects.get(id=29),
-        'second': Article.objects.get(id=35),
-        'third': Article.objects.get(id=30),
-        'fourth': Article.objects.get(id=28)
+        'main': asyncio.run(get_article_by_id(50)),
+        'first': asyncio.run(get_article_by_id(29)),
+        'second': asyncio.run(get_article_by_id(35)),
+        'third': asyncio.run(get_article_by_id(30)),
+        'fourth': asyncio.run(get_article_by_id(28))
     }
     return render(request, 'news/index.html', context)
 
@@ -31,7 +33,6 @@ def create(request):
         if form.is_valid():
             article = form.save()
             article.author = request.user
-            # article.photo = request.FILES['']
             article.save()
             return redirect('profile')
 
@@ -47,7 +48,7 @@ def create(request):
 
 class ProfileUpdateView(View):
     def get(self, request):
-        author = Author.objects.get(user_id=request.user)
+        author = asyncio.run(get_author_by_user_id(request.user))
         form = ProfileUpdateForm(instance=author)
         data = {
             "title": 'Update profile',
@@ -57,7 +58,7 @@ class ProfileUpdateView(View):
         return render(request, 'news/profile_update.html', data)
 
     def post(self, request):
-        author = Author.objects.get(user_id=request.user)
+        author = asyncio.run(get_author_by_user_id(request.user))
         form = ProfileUpdateForm(request.POST, instance=author)
         if form.is_valid():
             form.save()
@@ -71,8 +72,8 @@ class ProfileUpdateView(View):
 
 class ProfileView(View):
     def get(self, request):
-        profile_articles = Article.objects.filter(author=request.user).order_by("-time_create")
-        profile_user = Author.objects.get(user_id=request.user)
+        profile_articles = asyncio.run(get_filtered_ordered_articles_by_id(request.user))
+        profile_user = asyncio.run(get_author_by_user_id(request.user))
         data = {
             'title': 'Profile',
             'profile_articles': profile_articles,
@@ -88,20 +89,20 @@ class ArticlesListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+        context['categories'] = asyncio.run(get_all_categories())
         context['title'] = 'All articles'
-        context['article_list'] = Article.objects.all().order_by("-time_create")
+        context['article_list'] = asyncio.run(get_all_articles_descending())
         logger.info('Checked all articles')
         return context
 
     def get_queryset(self):
-        return Article.objects.all().order_by("-time_create")
+        return asyncio.run(get_all_articles_descending())
 
 
 class FilteredArticlesView(View):
     def get(self, request, fltr):
-        article_list = Article.objects.filter(category__name=fltr)
-        categories = Category.objects.all()
+        article_list = asyncio.run(get_filtered_articles_by_category(fltr))
+        categories = asyncio.run(get_all_categories())
         context = {
             'title': fltr,
             'article_list': article_list,
@@ -131,9 +132,9 @@ class ArticleDeleteView(DeleteView):
 
 class AuthorView(View):
     def get(self, request, pk):
-        author_user = User.objects.get(pk=pk)
-        author = Author.objects.get(user_id=pk)
-        author_articles = Article.objects.filter(author=author.user).order_by("-time_create")
+        author_user = asyncio.run(get_user_by_id(pk))
+        author = asyncio.run(get_author_by_user_id(pk))
+        author_articles = asyncio.run(get_filtered_ordered_articles_by_id(author.user))
         data = {
             'author_user': author_user,
             'author': author,
@@ -141,3 +142,44 @@ class AuthorView(View):
         }
         logger.info('Checked author details')
         return render(request, 'news/author_detail.html', data)
+
+
+@sync_to_async
+def get_all_articles_descending():
+    articles = Article.objects.all().order_by("-time_create")
+    return articles
+
+
+@sync_to_async
+def get_article_by_id(id):
+    try:
+        article = Article.objects.get(id=id)
+        return article
+    except:
+        return None
+
+
+@sync_to_async
+def get_author_by_user_id(id):
+    return Author.objects.get(user_id=id)
+
+
+@sync_to_async
+def get_filtered_ordered_articles_by_id(id):
+    articles = Article.objects.filter(author=id).order_by("-time_create")
+    return articles
+
+
+@sync_to_async
+def get_filtered_articles_by_category(id):
+    return Article.objects.filter(category__name=id)
+
+
+@sync_to_async
+def get_all_categories():
+    return Category.objects.all()
+
+
+@sync_to_async
+def get_user_by_id(id):
+    return User.objects.get(pk=id)
