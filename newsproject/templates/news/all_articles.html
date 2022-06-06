@@ -27,7 +27,9 @@
                     <div class="col-md-4">
                         <div class="card mb-4 box-shadow">
                             <div class="custom-container">
-                                <img class="card-img-top" src="{{ item.photo.url }}" alt="Card image cap">
+                                <div class="box">
+                                    <img class="card-img-top" src="{{ item.photo.url }}" alt="Card image cap">
+                                </div>
                                 <div class="custom-centered">
                                 </div>
                             </div>
@@ -86,6 +88,23 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+        }
+
+        .box {
+            position: relative;
+            overflow: hidden;
+            width: 410px;
+            height: 410px;
+        }
+
+        .box img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 410px;
+            height: 410px;
+            object-fit: cover;
         }
     </style>
 
