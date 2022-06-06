@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+import cloudinary
+import cloudinary.api
+import cloudinary.uploader
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news',
-    'users'
+    'users',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -60,8 +64,7 @@ ROOT_URLCONF = 'newsproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -166,3 +169,5 @@ LOGGING = {
         },
     },
 }
+
+cloudinary.config(cloud_name='dg2oekd3o', api_key='531231916222972', api_secret='fns9d44U0Epew4eSi670BdD_u5U')

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from users.models import User
+from cloudinary.models import CloudinaryField
 
 
 class Author(models.Model):
@@ -34,7 +35,7 @@ class Article(models.Model):
     title = models.CharField(max_length=100)
     category = models.ManyToManyField(Category)
     content = models.TextField(blank=True)
-    photo = models.ImageField(upload_to="photos/", default="default.png")
+    photo = CloudinaryField('imageURL')
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
