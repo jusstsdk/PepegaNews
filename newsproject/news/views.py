@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import DetailView, ListView, UpdateView, DeleteView
+
 from .models import *
 from .forms import ArticleForm, ProfileUpdateForm
+
+import logging
+
+logger = logging.getLogger('main')
 
 
 def index(request):
@@ -36,6 +41,7 @@ def create(request):
         'form': form,
         'error': error
     }
+    logger.info('Article created')
     return render(request, 'news/create.html', data)
 
 
@@ -47,6 +53,7 @@ class ProfileUpdateView(View):
             "title": 'Update profile',
             "form": form
         }
+        logger.info('Checked profile update')
         return render(request, 'news/profile_update.html', data)
 
     def post(self, request):
@@ -58,6 +65,7 @@ class ProfileUpdateView(View):
         data = {
             "form": form
         }
+        logger.info('Profile updated')
         return render(request, 'news/profile_update.html', data)
 
 
@@ -70,6 +78,7 @@ class ProfileView(View):
             'profile_articles': profile_articles,
             'profile_user': profile_user
         }
+        logger.info('Checked profile')
         return render(request, 'news/profile.html', data)
 
 
@@ -82,6 +91,7 @@ class ArticlesListView(ListView):
         context['categories'] = Category.objects.all()
         context['title'] = 'All articles'
         context['article_list'] = Article.objects.all().order_by("-time_create")
+        logger.info('Checked all articles')
         return context
 
     def get_queryset(self):
@@ -97,11 +107,13 @@ class FilteredArticlesView(View):
             'article_list': article_list,
             'categories': categories
         }
+        logger.info('Checked filtered articles')
         return render(request, 'news/all_articles.html', context)
 
 
 class ArticleDetailView(DetailView):
     model = Article
+    logger.info('Checked article details')
 
 
 class ArticleUpdateView(UpdateView):
@@ -127,4 +139,5 @@ class AuthorView(View):
             'author': author,
             'author_articles': author_articles
         }
+        logger.info('Checked author details')
         return render(request, 'news/author_detail.html', data)

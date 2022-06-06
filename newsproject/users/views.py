@@ -5,6 +5,10 @@ from django.views import View
 from users.forms import UserCreationForm
 from news.models import Author
 
+import logging
+
+logger = logging.getLogger('main')
+
 
 class Register(View):
     template_name = 'registration/register.html'
@@ -13,6 +17,7 @@ class Register(View):
         context = {
             'form': UserCreationForm()
         }
+        logger.info('Checked registration')
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -29,4 +34,5 @@ class Register(View):
         context = {
             'form': form
         }
+        logger.info('User registered')
         return render(request, self.template_name, context)
