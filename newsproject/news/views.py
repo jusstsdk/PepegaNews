@@ -17,11 +17,11 @@ def index(request):
     context = {
         'title': 'PepegaNews',
         'articles': articles,
-        'main': asyncio.run(get_article_by_id(50)),
-        'first': asyncio.run(get_article_by_id(29)),
-        'second': asyncio.run(get_article_by_id(35)),
-        'third': asyncio.run(get_article_by_id(30)),
-        'fourth': asyncio.run(get_article_by_id(28))
+        'main': asyncio.run(get_article_by_id(1)),
+        'first': asyncio.run(get_article_by_id(2)),
+        'second': asyncio.run(get_article_by_id(3)),
+        'third': asyncio.run(get_article_by_id(4)),
+        'fourth': asyncio.run(get_article_by_id(5))
     }
     return render(request, 'news/index.html', context)
 
