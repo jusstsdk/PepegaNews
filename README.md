@@ -4,9 +4,9 @@
 Новостной портал. Пользователям доступны регистрация и авторизация, создание статей, их редактирование и удаление, а также фильтрация по категориям редактирование профиля автора.
 
 ## Техническая часть
-Проект разрабатывался на Django 4.0.4 с использованием PostgreSQ. Прод задеплоен на Heroku при помощи Container Registry. Для хранения изображений был использован облачный сервис Cloudinary.
+Проект разрабатывался на Django 4.0.4 с использованием PostgreSQL. Прод задеплоен на Heroku при помощи Container Registry. Для хранения изображений был использован облачный сервис Cloudinary.
 
-[https://projectcocktails.herokuapp.com]
+[https://pepeganews.herokuapp.com]
 
 ![alt text](https://res.cloudinary.com/dg2oekd3o/image/upload/v1654600961/readme/1_u9nzgg.png)
 
